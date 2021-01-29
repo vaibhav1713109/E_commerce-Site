@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Product,ContactUs,Orders,OrderUpdate
+from .models import Product,ContactUs,Orders,OrderUpdate,ProductImage
 from math import ceil
 import json
 
@@ -13,10 +13,10 @@ def index(request):
     #prams={"no_os_slides":nslides,"product":products,"range":range(1,nslides+1)}
     #allprods=[[products,range(1,nslides),nslides],[products,range(1,nslides),nslides]]
     allprods=[]
-    prods=Product.objects.values('category','id')
-    cats={item['category'] for item in prods}
+    prods=Product.objects.values('subcategory','id')
+    cats={item['subcategory'] for item in prods}
     for cat in cats:
-        products=Product.objects.filter(category=cat)
+        products=Product.objects.filter(subcategory=cat)
         n=len(products)
         nslides=(n//4+ceil((n/4)-(n//4)))
         allprods.append([products,range(1,nslides),nslides])
@@ -104,9 +104,15 @@ def tracker(request):
 def prodView(request,myid):
     #return HttpResponse('this is prodView page')
     #fetch the product using id
+    product=get_object_or_404(Product, id=myid)
+    prod_images=ProductImage.objects.filter(images=product)
     product=Product.objects.filter(id=myid)
-    #print(product)
-    return render(request,"shop/productview.html",{'prod':product[0]})
+    cat=product[0].subcategory
+    prods=Product.objects.filter(subcategory=cat)
+    n=len(prods)
+    nslides=(n//4+ceil((n/4)-(n//4)))
+    length=range(1,nslides)
+    return render(request,"shop/productview.html",{'prod':product,'prod_images':prod_images,'prods':prods,'length':length})
 
 
 def checkout(request):

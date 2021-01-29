@@ -10,7 +10,7 @@
     {% for product , range , nslides in allprods%}
 
 
-    <h2>{{product.0.category}}</h2>
+    <h2>{{product.0.subcategory}}</h2>
     <div class="row">
         <div id="carouselExampleIndicators{{forloop.counter}}" class="col carousel slide my-3" data-ride="carousel">
 
@@ -26,17 +26,18 @@
                 <div class="carousel-item active">
                     {% for i in product%}
                     <div class="col-xs-3 col-sm-3 col-md-3" style="display: inline-block; margin-left: -4px;">
-                        <div class="card align-items-center" style="width: 18rem;">
-                            <img src="/media/{{i.image}}" style="max-width: 
-                        150px; height: 275px;" class="card-img-top" alt="...">
+                        <div class="card align-items-center" style="    width: 280px;
+                        height: 512px;">
+                            <img src="/media/{{i.image}}" style="width: 
+                        150px; height: 275px; margin-left: auto; margin-right: auto;" class="card-img-top" alt="..." >
                             <div class="card-body">
-                                <h5 class="card-title" id="namepr{{i.id}}">{{i.product_name|slice:":10"}}...</h5>
+                                <h5 class="card-title" id="namepr{{i.id}}">{{i.product_name}}</h5>
                                 <div class="container row">
                                     <b>MrP:- </b>
                                     <h5 id="amtpr{{i.id}}">{{i.price}}</h5>
                                     <h5> Rs/-</h5>
                                 </div>
-                                <p class="card-text">{{i.desc|slice:":25"}}...</p>
+                                <p class="card-text">{{i.desc|slice:":20"}}...</p>
                                 <span id="divpr{{i.id}}" class="divpr">
                                     <button id="pr{{i.id}}" class="btn btn-primary cart">Add to Cart</button>
                                 </span>
@@ -115,7 +116,7 @@
         var i = 1;
         for (var item in cart) {
             popStr = popStr + "<b>" + i + "</b>. ";
-            popStr = popStr + document.getElementById('name' + item).innerHTML.slice(0, 10) + "Qty: " + cart[item][0] + "<br>";
+            popStr = popStr + document.getElementById('name' + item).innerHTML + " <b>Qty:</b> " + cart[item][0] + "<br>";
             i = i + 1;
         }
         popStr = popStr + "</div> <a class='btn btn-primary mx-2' href='/shop/checkout' id='checkout', role='button'>Checkout</a><button class='btn btn-primary' onclick='clearcart()' id='clearcart'>Clear Cart</button>";
@@ -127,7 +128,7 @@
 
 
     function updatecart(cart) {
-        console.log(cart)
+        //console.log(cart)
         var sum = 0;
         for (var item in cart) {
             sum = sum + cart[item][0];
@@ -158,7 +159,7 @@
     $('.divpr').on("click", "button.plus", function () {
         //console.log('plus clicked');
         a = this.id.slice(4,);
-        //console.log(a);
+        console.log(a);
         cart[a][0] = cart[a][0] + 1;
         document.getElementById('val' + a).innerHTML = cart[a][0];
         updatecart(cart);
@@ -174,7 +175,7 @@
     }
 
     //to show cart item here popcart is id of cart button
-    $('#popcart').popover()
+    //$('#popcart').popover()
 
 </script>
 
